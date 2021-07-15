@@ -7,7 +7,9 @@ rm(list = ls())
 
 setwd('C:/Users/e/Desktop/Kirk REU FHLOO Data')
 
-install.packages("cran")
+install.packages("seacarb")
+install.packages("sf")
+install.packages("oce")
 install.packages("zoo")
 install.packages('rlang')
 install.packages(
@@ -29,8 +31,9 @@ library(dygraphs)
 library(xts)          # To make the conversion data-frame / xts format
 library(tidyverse)
 library(zoo)
-#library(cran)
-
+library(seacarb)
+library(sf)
+library (oce)
 ################ Open FHLOO as CSV ######################
 
 # Read the data, turn nonexistent data to "NaN"
@@ -238,5 +241,13 @@ AirSat <- ggplot(data = FHLOO1, aes(x = Date, y = O2AirSat_Percent))+
 ggplotly(AirSat)
 
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Use SeaCarb ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+colnames(FHLOO1)
+
+carbfull(flag = 21, FHLOO1$CO2_uAtm, FHLOO1$pH, S=35, T=25, Patm=1, P=0, Pt=0, Sit=0,
+         k1k2="x", kf="x", ks="d", pHscale="T", b="u74", gas="potential",
+         NH4t=0, HSt=0)
 
 
