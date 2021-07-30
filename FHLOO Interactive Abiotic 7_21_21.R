@@ -82,6 +82,7 @@ T <- ggplot(data = FHLOO1, aes(x = Date, y = SBE37Temp_C))+
         axis.text.y = element_text(size =10),
         axis.ticks.x=element_blank(),
         axis.title.y = element_text(size =12,lineheight=3)) 
+T
 
 ggplotly(T)
 
@@ -101,11 +102,9 @@ view(Temp)
 pH <- ggplot(data = FHLOO1, aes(x = Date, y = pH))+ 
   geom_line(color="#69b3a2") +
   ylab("pH") +
-  scale_x_datetime(date_breaks = "4 days", labels = date_format("%b %d"),breaks = as.Date(c("2021-06-21","2021-06-25", "2021-06-29", "2021-07-3",
-                                                                                           "2021-07-7", "2021-07-11","2021-07-16", "2021-07-20"))) +
-                                                                                          
+  scale_x_datetime(date_breaks = "4 days", labels = date_format("%b %d"),breaks = as.Date(from = "2021-06-21", to = "2021-07-21")) +
+  scale_y_continuous(breaks = seq(from = 7.5, to = 9.0, by = .2)) +                                                                                        
   ggtitle("Sea Water pH Over Time") + 
-  ylim(6,8) +
   theme_minimal() +
   theme(panel.grid.major = element_line(colour = "grey", size = 0.25),  #theme for bottom plot
         panel.grid.minor = element_line(colour = "grey", size = 0.25),
@@ -114,6 +113,8 @@ pH <- ggplot(data = FHLOO1, aes(x = Date, y = pH))+
         axis.text.y = element_text(size =10),
         axis.ticks.x=element_blank(),
         axis.title.y = element_text(size =12,lineheight=3)) 
+
+pH
 
 ggplotly(pH)
 
@@ -274,6 +275,8 @@ data2 <- data.frame(SeaCarb_OmegaAragonite = Carb$OmegaAragonite,
 #Add columns from data2 to FHLOO1 to combine datasets
 FHLOO2 <- cbind(FHLOO1, data2)
 
+#Save as CSV file
+write.csv(FHLOO2, "FHLOO2.csv")
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Plot Aragonite over time ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 install.packages("reshape")
@@ -298,7 +301,7 @@ p <- ggplot(data = dm, aes(x = Date, y = SeaCarb_OmegaAragonite, SeaCarb_OmegaCa
 ggplotly(p)
   
 # 6 figures arranged in 3 rows and 2 columns
-par(mfrow=c(6,1))
+par(mfrow=c(2,3), lty = )
 plot(FHLOO2$Date, FHLOO2$SBE37Temp_C, main="Temperature")
 plot(FHLOO2$Date, FHLOO2$O2Conc_mgL, main="Oxygen")
 plot(FHLOO2$Date, FHLOO2$CO2_uAtm, main="pCO2")
@@ -306,6 +309,7 @@ plot(FHLOO2$Date, FHLOO2$SBE37Sal_PSU, main="Salinity")
 plot(FHLOO2$Date, FHLOO2$pH, main="pH")
 plot(FHLOO2$Date, FHLOO2$SeaCarb_OmegaCalcite, main="Calcite")
 
+?par
 
 colnames(FHLOO2)
 
